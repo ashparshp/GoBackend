@@ -1,4 +1,4 @@
-# Go Printing Methods, Build Commands & Variables
+# Go Notes
 
 ## 1. Basic Printing (`fmt` Package)
 
@@ -261,3 +261,57 @@ fmt.Println(firstName)
 ```
 
 ---
+
+## 8. Loops in Go
+
+### 🔄 `for` Loop (Basic)
+```go
+for i := 0; i < 5; i++ {
+    fmt.Println("Iteration", i)
+}
+```
+
+### 🔁 `for` as a While Loop
+```go
+i := 0
+for i < 5 {
+    fmt.Println("Iteration", i)
+    i++
+}
+```
+
+### 🔄 Infinite Loop
+```go
+for {
+    fmt.Println("This will run forever!")
+}
+```
+
+### 🛑 Breaking Out of a Loop
+```go
+for i := 0; i < 5; i++ {
+    if i == 3 {
+        break
+    }
+    fmt.Println(i)
+}
+```
+
+### 🔄 Skipping Iterations with `continue`
+```go
+for i := 0; i < 5; i++ {
+    if i == 2 {
+        continue // Skips iteration when i == 2
+    }
+    fmt.Println(i)
+}
+```
+
+### 🔄 Looping Over Arrays/Slices
+```go
+nums := []int{1, 2, 3, 4, 5}
+for index, value := range nums {
+    fmt.Println("Index:", index, "Value:", value)
+}
+```
+
