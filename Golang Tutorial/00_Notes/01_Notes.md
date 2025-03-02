@@ -307,11 +307,24 @@ for i := 0; i < 5; i++ {
 }
 ```
 
-### 🔄 Looping Over Arrays/Slices
+### 🔄 Looping with `range`
 ```go
-nums := []int{1, 2, 3, 4, 5}
-for index, value := range nums {
-    fmt.Println("Index:", index, "Value:", value)
+for i := range 11 {
+    fmt.Println(i)
 }
 ```
 
+```go
+numbers := []int{10, 20, 30, 40}
+for index, value := range numbers {
+    fmt.Printf("Index: %d, Value: %d\n", index, value)
+}
+```
+
+```go
+word := "Golang"
+for _, char := range word {
+    fmt.Printf("%c ", char)
+}
+// Output: G o l a n g
+```
