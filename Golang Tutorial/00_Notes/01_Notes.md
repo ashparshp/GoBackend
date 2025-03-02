@@ -1,4 +1,4 @@
-# Go Printing Methods
+# Go Printing Methods & Build Commands
 
 ## 1. Basic Printing (`fmt` Package)
 
@@ -138,10 +138,58 @@ func main() {
 
 ---
 
-## ✅ Conclusion
-- **Use `fmt.Println()` for general printing.**
-- **Use `fmt.Printf()` for formatted output.**
-- **Use `log` package for logging.**
-- **Use `os.Stdout` and `os.Stderr` for direct output control.**
-- **Avoid `println()` unless debugging.**
+## 6. Go Build & Run Commands
 
+### 🛠️ Run Go Code Without Building an Executable
+```sh
+go run main.go
+```
+- Compiles and runs the file without creating an executable.
+
+### 🏗️ Compile and Build an Executable
+```sh
+go build main.go
+./main        # (Linux/macOS)
+main.exe      # (Windows)
+```
+- Generates an executable in the current directory.
+
+### 📦 Install a Go Binary
+```sh
+go install
+```
+- Builds and installs the binary in `$GOPATH/bin`.
+
+### 🌍 Cross-Compile for Different OS/Architectures
+```sh
+GOOS=windows GOARCH=amd64 go build -o myapp.exe main.go  # Windows 64-bit
+GOOS=linux GOARCH=amd64 go build -o myapp main.go       # Linux 64-bit
+GOOS=darwin GOARCH=arm64 go build -o myapp main.go      # macOS M1/M2
+```
+
+### 🔍 Verbose Mode for Debugging
+```sh
+go build -v
+```
+```sh
+go run -v main.go
+```
+
+### 🧹 Clean Build Files
+```sh
+go clean
+```
+```sh
+go clean -modcache
+```
+
+---
+
+## ✅ Summary
+| Command | Description |
+|---------|-------------|
+| `go run main.go` | Runs the program without creating a binary. |
+| `go build main.go` | Compiles and creates an executable. |
+| `go install` | Builds and installs the binary in `$GOPATH/bin`. |
+| `GOOS=linux GOARCH=amd64 go build -o app main.go` | Cross-compiles for a different OS/Arch. |
+| `go clean` | Removes built binaries and cache. |
