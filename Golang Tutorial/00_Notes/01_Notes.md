@@ -265,6 +265,7 @@ fmt.Println(firstName)
 ## 8. Loops in Go
 
 ### 🔄 `for` Loop (Basic)
+
 ```go
 for i := 0; i < 5; i++ {
     fmt.Println("Iteration", i)
@@ -272,6 +273,7 @@ for i := 0; i < 5; i++ {
 ```
 
 ### 🔁 `for` as a While Loop
+
 ```go
 i := 0
 for i < 5 {
@@ -281,6 +283,7 @@ for i < 5 {
 ```
 
 ### 🔄 Infinite Loop
+
 ```go
 for {
     fmt.Println("This will run forever!")
@@ -288,6 +291,7 @@ for {
 ```
 
 ### 🛑 Breaking Out of a Loop
+
 ```go
 for i := 0; i < 5; i++ {
     if i == 3 {
@@ -298,6 +302,7 @@ for i := 0; i < 5; i++ {
 ```
 
 ### 🔄 Skipping Iterations with `continue`
+
 ```go
 for i := 0; i < 5; i++ {
     if i == 2 {
@@ -308,6 +313,7 @@ for i := 0; i < 5; i++ {
 ```
 
 ### 🔄 Looping with `range`
+
 ```go
 for i := range 11 {
     fmt.Println(i)
@@ -332,6 +338,7 @@ for _, char := range word {
 ## 9. Conditions in Go
 
 ### ✅ `if` Statement
+
 ```go
 if age > 18 {
     fmt.Println("Adult")
@@ -339,6 +346,7 @@ if age > 18 {
 ```
 
 ### ✅ `if-else` Statement
+
 ```go
 if age >= 18 {
     fmt.Println("Adult")
@@ -348,6 +356,7 @@ if age >= 18 {
 ```
 
 ### ✅ `if-else if-else` Ladder
+
 ```go
 if age < 13 {
     fmt.Println("Child")
@@ -359,6 +368,7 @@ if age < 13 {
 ```
 
 ### ✅ Short Variable Declaration in `if`
+
 ```go
 if num := 10; num%2 == 0 {
     fmt.Println("Even")
@@ -368,6 +378,7 @@ if num := 10; num%2 == 0 {
 ```
 
 ### ✅ `switch` Statement
+
 ```go
 switch day := "Monday"; day {
 case "Monday":
@@ -380,6 +391,7 @@ default:
 ```
 
 ### ✅ `switch` Without Condition (Acts Like `if-else`)
+
 ```go
 num := 10
 switch {
@@ -392,3 +404,31 @@ default:
 }
 ```
 
+### ✅ `switch` case with multiple cases
+
+```go
+switch time.Now().Weekday() {
+	case time.Monday, time.Tuesday, time.Wednesday, time.Thursday, time.Friday:
+		fmt.Println("Weekday")
+	case time.Saturday, time.Sunday:
+		fmt.Println("Weekend")
+}
+```
+
+### ✅ `Type` switch
+
+```go
+whoAmI := func(i interface{}) {
+		switch i.(type) {
+		case int:
+			fmt.Println("I am an integer")
+		case string:
+			fmt.Println("I am a string")
+		default:
+			fmt.Println("Unknown type")
+		}
+	}
+	whoAmI(1)
+	whoAmI("Hello")
+	whoAmI(1.0)
+```

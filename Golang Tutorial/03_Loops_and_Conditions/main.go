@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 
@@ -55,5 +58,28 @@ func main() {
 	default:
 		fmt.Println("default")
 	}
+
+	// switch case with multiple cases
+	switch time.Now().Weekday() {
+	case time.Monday, time.Tuesday, time.Wednesday, time.Thursday, time.Friday:
+		fmt.Println("Weekday")
+	case time.Saturday, time.Sunday:
+		fmt.Println("Weekend")
+	}
+
+	// type switch
+	whoAmI := func(i interface{}) {
+		switch i.(type) {
+		case int:
+			fmt.Println("I am an integer")
+		case string:
+			fmt.Println("I am a string")
+		default:
+			fmt.Println("Unknown type")
+		}
+	}
+	whoAmI(1)
+	whoAmI("Hello")
+	whoAmI(1.0)
 
 }
