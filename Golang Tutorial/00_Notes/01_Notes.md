@@ -328,3 +328,67 @@ for _, char := range word {
 }
 // Output: G o l a n g
 ```
+
+## 9. Conditions in Go
+
+### ✅ `if` Statement
+```go
+if age > 18 {
+    fmt.Println("Adult")
+}
+```
+
+### ✅ `if-else` Statement
+```go
+if age >= 18 {
+    fmt.Println("Adult")
+} else {
+    fmt.Println("Minor")
+}
+```
+
+### ✅ `if-else if-else` Ladder
+```go
+if age < 13 {
+    fmt.Println("Child")
+} else if age < 18 {
+    fmt.Println("Teenager")
+} else {
+    fmt.Println("Adult")
+}
+```
+
+### ✅ Short Variable Declaration in `if`
+```go
+if num := 10; num%2 == 0 {
+    fmt.Println("Even")
+} else {
+    fmt.Println("Odd")
+}
+```
+
+### ✅ `switch` Statement
+```go
+switch day := "Monday"; day {
+case "Monday":
+    fmt.Println("Start of the week!")
+case "Friday":
+    fmt.Println("Weekend is near!")
+default:
+    fmt.Println("Just another day.")
+}
+```
+
+### ✅ `switch` Without Condition (Acts Like `if-else`)
+```go
+num := 10
+switch {
+case num < 0:
+    fmt.Println("Negative")
+case num == 0:
+    fmt.Println("Zero")
+default:
+    fmt.Println("Positive")
+}
+```
+
