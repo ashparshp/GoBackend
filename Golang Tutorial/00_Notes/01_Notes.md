@@ -335,6 +335,8 @@ for _, char := range word {
 // Output: G o l a n g
 ```
 
+---
+
 ## 9. Conditions in Go
 
 ### ✅ `if` Statement
@@ -432,6 +434,8 @@ whoAmI := func(i interface{}) {
 	whoAmI("Hello")
 	whoAmI(1.0)
 ```
+
+---
 
 ## 10. Arrays in Go
 
