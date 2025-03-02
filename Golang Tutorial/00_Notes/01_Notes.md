@@ -432,3 +432,43 @@ whoAmI := func(i interface{}) {
 	whoAmI("Hello")
 	whoAmI(1.0)
 ```
+
+## 10. Arrays in Go
+
+### ✅ Declaring an Array
+
+```go
+var arr [5]int // An array of 5 integers
+fmt.Println(arr) // Output: [0 0 0 0 0]
+```
+
+### ✅ Initializing an Array
+
+```go
+numbers := [3]int{1, 2, 3} // Explicit size
+names := [...]string{"Alice", "Bob", "Charlie"} // Implicit size: initialize the array without specifying the length and compiler will calculate the length
+fmt.Println(numbers) // Output: [1 2 3]
+fmt.Println(names)   // Output: [Alice Bob Charlie]
+```
+
+### ✅ Accessing and Modifying Elements
+
+```go
+arr[0] = 10
+fmt.Println(arr[0]) // Output: 10
+```
+
+### ✅ Iterating Over an Array
+
+```go
+for i, val := range numbers {
+    fmt.Printf("Index %d: %d\n", i, val)
+}
+```
+
+### ✅ Multi-Dimensional Arrays
+
+```go
+var matrix [2][2]int = [2][2]int{{1, 2}, {3, 4}}
+fmt.Println(matrix) // Output: [[1 2] [3 4]]
+```
