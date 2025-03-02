@@ -4,6 +4,8 @@ import "fmt"
 
 func main() {
 
+	/* Array is of fixed size and it is used to store multiple values of same type.*/
+
 	// Array declaration
 	var numbers [5]int
 
@@ -40,5 +42,9 @@ func main() {
 	// Print the array
 	fmt.Println(numbers5)
 
+	// Declare and initialize 2D array
+	var numbers6 = [2][2]int{{1, 2}, {3, 4}}
 
+	// Print the 2D array
+	fmt.Println(numbers6)
 }
