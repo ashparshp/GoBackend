@@ -586,3 +586,96 @@ for i, v := range nums8 {
     fmt.Println("Row", i, ":", v)
 }
 ```
+
+# 12. Go Maps
+
+## Overview
+
+Maps in Go are built-in associative data structures, similar to dictionaries in Python or hashes in Ruby. They store key-value pairs and provide efficient lookups.
+
+---
+
+## Creating a Map
+
+You can create a map using `make()` or a map literal.
+
+```go
+// Using make()
+m := make(map[string]int) // Creates an empty map with string keys and int values
+
+// Using a map literal
+n := map[string]int{"foo": 1, "bar": 2}
+fmt.Println("map:", n)
+```
+
+## Adding and Retrieving Values
+
+```go
+m["k1"] = 7
+m["k2"] = 13
+fmt.Println("map:", m) // Output: map[k1:7 k2:13]
+
+// Retrieving values
+v1 := m["k1"]
+fmt.Println("v1: ", v1) // Output: v1: 7
+```
+
+## Getting the Length of a Map
+
+```go
+fmt.Println("len:", len(m)) // Output: length of map
+```
+
+## Deleting a Key from a Map
+
+```go
+delete(m, "k2")
+fmt.Println("map:", m) // k2 is removed
+```
+
+## Clearing All Key/Value Pairs
+
+```go
+clear(m)
+fmt.Println("map:", m) // Output: map: {}
+```
+
+## Checking if a Key Exists
+
+```go
+value, exists := m["k2"]
+if exists {
+    fmt.Println("Key exists, value:", value)
+} else {
+    fmt.Println("Key not found")
+}
+```
+
+## Iterating Over a Map
+
+```go
+for key, value := range n {
+    fmt.Println("key:", key, "value:", value)
+}
+```
+
+## Comparing Two Maps
+
+Since maps are reference types, you cannot compare them directly using `==`. However, you can use the `maps.Equal()` function (introduced in Go 1.21) to compare two maps.
+
+```go
+import "maps"
+
+m1 := map[string]int{"foo": 1, "bar": 2}
+m2 := map[string]int{"foo": 1, "bar": 2}
+fmt.Println("m1 == m2:", maps.Equal(m1, m2)) // Output: true
+```
+
+## Notes
+
+- A key that does not exist in the map returns the zero value of the value type.
+- Maps are **not safe for concurrent use**; use `sync.Mutex` or `sync.Map` for safe concurrent access.
+- The `delete()` function does nothing if the key does not exist.
+- The order of iteration over a map is **not guaranteed**.
+
+---
