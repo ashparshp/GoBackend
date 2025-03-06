@@ -679,3 +679,122 @@ fmt.Println("m1 == m2:", maps.Equal(m1, m2)) // Output: true
 - The order of iteration over a map is **not guaranteed**.
 
 ---
+
+## 12. Functions
+
+### Basic Function
+
+A function in Go can take zero or more arguments and return values.
+
+```go
+func add(x int, y int) int {
+	return x + y
+}
+
+func main() {
+	fmt.Println(add(42, 13))
+}
+```
+
+### Omitting Types
+
+When two or more consecutive parameters share a type, you can omit the type from all but the last.
+
+```go
+func add2(x, y int) int {
+	return x + y
+}
+```
+
+### Multiple Return Values
+
+Functions can return multiple values.
+
+```go
+func swap(x, y string) (string, string, bool) {
+	return y, x, true
+}
+
+func main() {
+	a, b, _ := swap("hello", "world")
+	fmt.Println(a, b)
+}
+```
+
+### Passing Function as Argument
+
+A function can be passed as an argument to another function.
+
+```go
+func applyIt(afunc func(int) int, val int) int {
+	return afunc(val)
+}
+
+func double(n int) int {
+    return n * 2
+}
+
+func main() {
+	applyIt0 := applyIt(func(x int) int { return x * x }, 3)
+	fmt.Println(applyIt0)
+
+	applyIt1 := applyIt(double, 3)
+	fmt.Println(applyIt1)
+}
+```
+
+### Returning a Function
+
+A function can return another function.
+
+```go
+func makeAdder() func(int) int {
+	return func(x int) int {
+		return x + 2
+	}
+}
+
+func main() {
+	adder := makeAdder()
+	fmt.Println(adder(3))
+}
+```
+
+### Variadic Functions
+
+A function can take a variable number of arguments.
+
+```go
+func sum(nums ...int) int {
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+	return total
+}
+
+func main() {
+	result := sum(1, 2, 3, 4, 5)
+	fmt.Println("Result:", result)
+
+	nums := []int{1, 2, 3, 4, 5}
+	result = sum(nums...)
+	fmt.Println("Result:", result)
+}
+```
+
+### Variadic Functions with Any Type
+
+A variadic function can accept arguments of any type using `interface{}`.
+
+```go
+func sumAnyType(items ...interface{}) {
+	for _, item := range items {
+		fmt.Println(item)
+	}
+}
+
+func main() {
+	sumAnyType(1, "Hello", 3.14, true)
+}
+```
