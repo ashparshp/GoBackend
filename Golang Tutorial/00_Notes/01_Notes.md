@@ -798,3 +798,47 @@ func main() {
 	sumAnyType(1, "Hello", 3.14, true)
 }
 ```
+
+### Closures in Go
+
+Closures are functions that **capture** and **remember** the variables in their surrounding scope.
+
+#### Example: Basic Closure
+
+```go
+func counter() func() int {
+    count := 0
+    return func() int {
+        count++
+        return count
+    }
+}
+
+increment := counter()
+fmt.Println(increment()) // 1
+fmt.Println(increment()) // 2
+fmt.Println(increment()) // 3
+```
+
+#### How Closures Work
+
+1. The `counter` function defines a local variable `count`.
+2. It returns an **anonymous function** that modifies and returns `count`.
+3. Each call to `increment()` retains access to `count`.
+
+#### Example: Multiple Closures
+
+Each call to `counter()` creates a **new** closure with its own `count`.
+
+```go
+inc1 := counter()
+inc2 := counter()
+
+fmt.Println(inc1()) // 1
+fmt.Println(inc1()) // 2
+fmt.Println(inc2()) // 1 (separate counter)
+```
+
+Closures allow state to be maintained across multiple function calls while avoiding global variables.
+
+---
