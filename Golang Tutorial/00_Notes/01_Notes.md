@@ -437,42 +437,152 @@ whoAmI := func(i interface{}) {
 
 ---
 
-## 10. Arrays in Go
+## 11. Arrays in Go
 
-### ✅ Declaring an Array
+### Declaring an Array
+
+- Arrays have a fixed size and store multiple values of the same type.
 
 ```go
-var arr [5]int // An array of 5 integers
-fmt.Println(arr) // Output: [0 0 0 0 0]
+var numbers [5]int
+fmt.Println(numbers)       // [0 0 0 0 0]
+fmt.Println(len(numbers))  // 5
 ```
 
-### ✅ Initializing an Array
+### Initializing an Array
+
+- Explicitly specifying values.
 
 ```go
-numbers := [3]int{1, 2, 3} // Explicit size
-names := [...]string{"Alice", "Bob", "Charlie"} // Implicit size: initialize the array without specifying the length and compiler will calculate the length
-fmt.Println(numbers) // Output: [1 2 3]
-fmt.Println(names)   // Output: [Alice Bob Charlie]
+numbers := [5]int{1, 2, 3, 4, 5}
+fmt.Println(numbers) // [1 2 3 4 5]
 ```
 
-### ✅ Accessing and Modifying Elements
+### Implicit Length Deduction
+
+- The compiler determines the array length.
 
 ```go
-arr[0] = 10
-fmt.Println(arr[0]) // Output: 10
+numbers := [...]int{1, 2, 3, 4, 5}
+fmt.Println(numbers) // [1 2 3 4 5]
 ```
 
-### ✅ Iterating Over an Array
+### Index-based Initialization
 
 ```go
-for i, val := range numbers {
-    fmt.Printf("Index %d: %d\n", i, val)
+numbers := [5]int{0: 1, 1: 2, 2: 3, 3: 4, 4: 5}
+fmt.Println(numbers) // [1 2 3 4 5]
+```
+
+### 2D Arrays
+
+```go
+matrix := [2][2]int{{1, 2}, {3, 4}}
+fmt.Println(matrix)       // [[1 2] [3 4]]
+fmt.Println(matrix[0])    // [1 2]
+fmt.Println(matrix[1])    // [3 4]
+fmt.Println(matrix[0][1]) // 2
+```
+
+## 11. Slices in Go
+
+### Uninitialized Slice
+
+- An uninitialized slice is `nil`.
+- Its length is `0`.
+
+```go
+var nums []int
+fmt.Println("nums:", nums)
+fmt.Println("Is nil:", nums == nil)
+fmt.Println("Length:", len(nums))
+```
+
+### Initialized Slice
+
+- Created using `make([]T, length, capacity)`.
+- Length: Number of elements initially present.
+- Capacity: Maximum storage before resizing.
+
+```go
+var nums2 = make([]int, 2, 5)
+fmt.Println("nums2:", nums2)
+fmt.Println("Is nil:", nums2 == nil)
+fmt.Println("Length:", len(nums2))
+fmt.Println("Capacity:", cap(nums2))
+```
+
+### Appending Elements
+
+- `append()` adds elements, growing capacity dynamically.
+
+```go
+nums2 = append(nums2, 1, 4, 5, 6)
+fmt.Println("After appending elements:", nums2)
+fmt.Println("New Length:", len(nums2))
+fmt.Println("New Capacity:", cap(nums2))
+```
+
+### Slice Literal
+
+- A slice can be initialized directly with values.
+
+```go
+nums3 := []int{}
+nums3 = append(nums3, 1, 2)
+fmt.Println("nums3:", nums3)
+fmt.Println("Length:", len(nums3))
+fmt.Println("Capacity:", cap(nums3))
+```
+
+### Copying a Slice
+
+- Use `copy(destination, source)` to duplicate a slice.
+
+```go
+nums4 := make([]int, len(nums3))
+copy(nums4, nums3)
+fmt.Println("nums4 (copied from nums3):", nums4)
+```
+
+### Slice Operator
+
+- Extracts sub-slices.
+
+```go
+var nums5 = []int{1, 2, 3, 4, 5}
+fmt.Println("nums5[1:3]:", nums5[1:3]) // [2 3]
+fmt.Println("nums5[:3]:", nums5[:3])   // [1 2 3]
+fmt.Println("nums5[1:]:", nums5[1:])   // [2 3 4 5]
+fmt.Println("nums5[:]:", nums5[:])     // [1 2 3 4 5]
+```
+
+### Slice Functions
+
+- `slices.Equal()` compares slices.
+
+```go
+var nums6 = []int{1, 2, 3, 4, 5}
+var nums7 = []int{6, 7, 8, 9, 10}
+fmt.Println("Are nums6 and nums7 equal?", slices.Equal(nums6, nums7)) // false
+fmt.Println("Are nums6 and nums6 equal?", slices.Equal(nums6, nums6)) // true
+```
+
+### 2D Slice
+
+- A slice of slices.
+
+```go
+var nums8 = [][]int{{1, 2, 3}, {4, 5, 6}}
+fmt.Println("nums8:", nums8)
+fmt.Println("First row:", nums8[0])
+fmt.Println("Element at [0][1]:", nums8[0][1])
+```
+
+### Iterating Over a 2D Slice
+
+```go
+for i, v := range nums8 {
+    fmt.Println("Row", i, ":", v)
 }
-```
-
-### ✅ Multi-Dimensional Arrays
-
-```go
-var matrix [2][2]int = [2][2]int{{1, 2}, {3, 4}}
-fmt.Println(matrix) // Output: [[1 2] [3 4]]
 ```
