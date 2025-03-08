@@ -1047,3 +1047,111 @@ fmt.Println(language.Version)
    - Create consistent instances
    - Can implement validation logic
    - Improve code readability
+
+---
+
+## 15. Embedded Structs in Go
+
+Go supports composition through struct embedding, allowing you to build complex data structures.
+
+### Defining Embedded Structs
+
+```go
+// Struct definition for an address
+type Address struct {
+	Street  string
+	City    string
+	State   string
+	Country string
+}
+
+// Customer struct with embedded Address struct
+type Customer struct {
+	Id      int
+	Name    string
+	Address Address  // Embedding the Address struct
+}
+```
+
+### Accessing Fields in Embedded Structs
+
+Access fields in embedded structs using dot notation:
+
+```go
+// Create a Customer with embedded Address
+customer := Customer{
+	Id:   1,
+	Name: "Ram",
+	Address: Address{
+		Street:  "123 Main St",
+		City:    "New York",
+		State:   "NY",
+		Country: "USA",
+	},
+}
+
+// Access embedded struct fields
+fmt.Println(customer.Address.Street)
+fmt.Println(customer.Address.City)
+fmt.Println(customer.Address.State)
+fmt.Println(customer.Address.Country)
+```
+
+### Methods with Embedded Structs
+
+Methods can access fields in embedded structs:
+
+```go
+// Method for Customer that accesses embedded Address fields
+func (c Customer) printCustomer() {
+	fmt.Println(c.Id)
+	fmt.Println(c.Name)
+	fmt.Println(c.Address.Street)
+	fmt.Println(c.Address.City)
+	fmt.Println(c.Address.State)
+	fmt.Println(c.Address.Country)
+}
+
+// Usage
+customer.printCustomer()
+```
+
+### Anonymous Field Embedding
+
+Go also supports embedding structs without field names (anonymous fields):
+
+```go
+type Customer struct {
+	Id      int
+	Name    string
+	Address  // Anonymous field embedding
+}
+
+// This allows direct access to Address fields
+customer.Street  // Instead of customer.Address.Street
+```
+
+### Key Points
+
+1. **Composition vs Inheritance**:
+
+   - Go favors composition (embedding) over inheritance
+   - More flexible and less coupled than traditional inheritance
+
+2. **Multiple Embedding**:
+
+   - A struct can embed multiple other structs
+   - Helps create complex types without deeply nested structures
+
+3. **Method Promotion**:
+
+   - Methods of embedded structs are "promoted" to the containing struct
+   - When using anonymous embedding, methods can be called directly
+
+4. **Name Conflicts**:
+
+   - If two embedded structs have fields or methods with the same name, you must use the specific struct name to access them
+
+5. **Encapsulation**:
+   - Named embedding (as shown above) provides better encapsulation
+   - Makes the code more explicit about which embedded struct a field belongs to

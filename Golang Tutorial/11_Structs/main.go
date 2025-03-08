@@ -33,6 +33,30 @@ func newOrder(id int, amount float64, status string, createDate time.Time, produ
 	return Order{id, amount, status, createDate, product}
 }
 
+// struct with embedded struct
+type Address struct {
+	Street  string
+	City    string
+	State   string
+	Country string
+}
+
+type Customer struct {
+	Id      int
+	Name    string
+	Address Address
+}
+
+// print Customer
+func (c Customer) printCustomer() {
+	fmt.Println(c.Id)
+	fmt.Println(c.Name)
+	fmt.Println(c.Address.Street)
+	fmt.Println(c.Address.City)
+	fmt.Println(c.Address.State)
+	fmt.Println(c.Address.Country)
+}
+
 
 func main() {
 	// Create an instance of the struct
@@ -92,5 +116,21 @@ func main() {
 	}
 	fmt.Println(language.Name)
 	fmt.Println(language.Version)
+
+	// Struct with embedded struct
+	customer := Customer{
+		Id:   1,
+		Name: "Ram",
+		Address: Address{
+			Street:  "123 Main St",
+			City:    "New York",
+			State:   "NY",
+			Country: "USA",
+		},
+		
+	}
+
+	customer.Address.Street = "456 Main St"
+	customer.printCustomer()
 
 }
