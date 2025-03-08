@@ -842,3 +842,74 @@ fmt.Println(inc2()) // 1 (separate counter)
 Closures allow state to be maintained across multiple function calls while avoiding global variables.
 
 ---
+
+## 13. Pass by Value vs Pass by Reference
+
+Go typically uses **pass by value** for function arguments, but you can achieve **pass by reference** using pointers.
+
+### Pass by Value
+
+By default, Go passes variables by value, creating copies of the original values:
+
+```go
+package main
+
+import "fmt"
+
+// By default, Go uses pass by value
+func changeNum(num int) {
+	num = 5
+	fmt.Println("num in changeNum:", num)
+}
+
+func main() {
+	num := 1
+
+	// Pass by value
+	fmt.Println("num before changeNum:", num)
+	changeNum(num)
+	fmt.Println("num after changeNum:", num)  // Original value remains unchanged
+}
+```
+
+**Output:**
+
+```
+num before changeNum: 1
+num in changeNum: 5
+num after changeNum: 1
+```
+
+### Pass by Reference (Using Pointers)
+
+To modify the original value, use pointers:
+
+```go
+package main
+
+import "fmt"
+
+// Pass by reference using pointers
+func changeNumByReference(num *int) {
+	*num = 5
+	fmt.Println("num in changeNumByReference:", *num)
+}
+
+func main() {
+	num := 1
+
+	// To pass by reference, use pointers
+	fmt.Println("num before changeNumByReference:", num)
+	changeNumByReference(&num)
+	fmt.Println("num after changeNumByReference:", num)  // Original value is modified
+}
+```
+
+**Output:**
+
+```
+num before changeNumByReference: 1
+num in changeNumByReference: 5
+num after changeNumByReference: 5
+```
+
