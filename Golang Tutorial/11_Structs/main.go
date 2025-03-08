@@ -36,42 +36,42 @@ func newOrder(id int, amount float64, status string, createDate time.Time, produ
 
 func main() {
 	// Create an instance of the struct
-	// order := Order{
-	// 	Id:         1,
-	// 	Amount:     100.0,
-	// 	Status:     "pending",
-	// 	CreateDate: time.Now(),
-	// 	Product:    "Laptop",
-	// }
+	order := Order{
+		Id:         1,
+		Amount:     100.0,
+		Status:     "pending",
+		CreateDate: time.Now(),
+		Product:    "Laptop",
+	}
 
 	// // Access the fields
-	// fmt.Println(order.Id)
-	// fmt.Println(order.Amount)
-	// fmt.Println(order.Status)
-	// fmt.Println(order.CreateDate)
-	// fmt.Println(order.Product)
+	fmt.Println(order.Id)
+	fmt.Println(order.Amount)
+	fmt.Println(order.Status)
+	fmt.Println(order.CreateDate)
+	fmt.Println(order.Product)
 
-	// // Update the fields
-	// order.Status = "completed"
-	// fmt.Println(order.Status)
+	// Update the fields
+	order.Status = "completed"
+	fmt.Println(order.Status)
 
-	// // Create an instance of the struct without specifying the field names
-	// order2 := Order{2, 200.0, "pending", time.Now(), "Mobile"}
-	// fmt.Println(order2.Id)
-	// fmt.Println(order2.Amount)
-	// fmt.Println(order2.Status)
-	// fmt.Println(order2.CreateDate)
-	// fmt.Println(order2.Product)
+	// Create an instance of the struct without specifying the field names
+	order2 := Order{2, 200.0, "pending", time.Now(), "Mobile"}
+	fmt.Println(order2.Id)
+	fmt.Println(order2.Amount)
+	fmt.Println(order2.Status)
+	fmt.Println(order2.CreateDate)
+	fmt.Println(order2.Product)
 
-	// // Call the receiver function
-	// order.printOrder()
+	// Call the receiver function
+	order.printOrder()
 
-	// // Call the receiver function
-	// order.updateStatus("shipped")
-	// fmt.Println(order.Status)
+	// Call the receiver function
+	order.updateStatus("shipped")
+	fmt.Println(order.Status)
 
-	// order2.updateStatus("shipped")
-	// fmt.Println(order2.Status)
+	order2.updateStatus("shipped")
+	fmt.Println(order2.Status)
 
 	// Call the factory function
 	order3 := newOrder(3, 300.0, "pending", time.Now(), "Tablet")

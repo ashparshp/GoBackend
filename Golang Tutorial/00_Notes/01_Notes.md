@@ -913,3 +913,137 @@ num in changeNumByReference: 5
 num after changeNumByReference: 5
 ```
 
+---
+
+## 14. Structs in Go
+
+Structs are composite data types that group together variables under a single name.
+
+### Defining a Struct
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+// Define a struct
+type Order struct {
+	Id         int
+	Amount     float64
+	Status     string
+	CreateDate time.Time // Nanosecond precision
+	Product    string
+}
+```
+
+### Creating Struct Instances
+
+There are multiple ways to create struct instances:
+
+```go
+// Method 1: With field names
+order := Order{
+    Id:         1,
+    Amount:     100.0,
+    Status:     "pending",
+    CreateDate: time.Now(),
+    Product:    "Laptop",
+}
+
+// Method 2: Without field names (must follow the same order as defined)
+order2 := Order{2, 200.0, "pending", time.Now(), "Mobile"}
+```
+
+### Accessing and Modifying Struct Fields
+
+```go
+// Accessing fields
+fmt.Println(order.Id)
+fmt.Println(order.Amount)
+fmt.Println(order.Status)
+fmt.Println(order.CreateDate)
+fmt.Println(order.Product)
+
+// Modifying fields
+order.Status = "completed"
+fmt.Println(order.Status)
+```
+
+### Receiver Functions (Methods)
+
+Methods are functions with a special receiver argument.
+
+```go
+// Value receiver - doesn't modify the original struct
+func (o Order) printOrder() {
+	fmt.Println(o.Id)
+	fmt.Println(o.Amount)
+	fmt.Println(o.Status)
+	fmt.Println(o.CreateDate)
+	fmt.Println(o.Product)
+}
+
+// Pointer receiver - can modify the original struct
+func (o *Order) updateStatus(status string) {
+	o.Status = status
+}
+```
+
+### Factory Functions
+
+Factory functions create and return new instances of structs:
+
+```go
+// Factory function
+func newOrder(id int, amount float64, status string, createDate time.Time, product string) Order {
+	return Order{id, amount, status, createDate, product}
+}
+
+// Usage
+order3 := newOrder(3, 300.0, "pending", time.Now(), "Tablet")
+order4 := newOrder(4, 400.0, "pending", time.Now(), "Desktop")
+```
+
+### Anonymous Structs
+
+Anonymous structs are defined and used without a separate type declaration:
+
+```go
+// Anonymous struct
+language := struct {
+    Name    string
+    Version float64
+}{
+    Name:    "Go",
+    Version: 1.15,
+}
+fmt.Println(language.Name)
+fmt.Println(language.Version)
+```
+
+### Key Points
+
+1. **Value vs Pointer Receivers**:
+
+   - Use value receivers (`func (o Order)`) when you don't need to modify the struct
+   - Use pointer receivers (`func (o *Order)`) when you need to modify the struct
+   - Pointer receivers are more efficient for large structs
+
+2. **Struct Initialization**:
+
+   - Named fields can be in any order
+   - Unnamed fields must follow the struct definition order
+   - Unspecified fields get zero values
+
+3. **Anonymous Structs**:
+
+   - Useful for one-time use structures
+   - Good for small, localized data groupings
+
+4. **Factory Functions**:
+   - Create consistent instances
+   - Can implement validation logic
+   - Improve code readability
