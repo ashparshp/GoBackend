@@ -1,6 +1,8 @@
-# Go Payment Gateway Implementation
+# Go Programming Examples
 
-## Evolution of the Design
+## 1. Payment Gateway Implementation
+
+### Evolution of the Design
 
 ### Version 1: Hardcoded Implementation
 
@@ -150,3 +152,125 @@ func main() {
 2. **Dependency Injection**: Payment gateways are injected into the Payment struct
 3. **Interface Segregation Principle**: Clean interface defines only required methods
 4. **Open/Closed Principle**: System is open for extension but closed for modification
+
+## 2. Custom Types with Constants
+
+Go allows defining custom string types with constants for type safety:
+
+```go
+type OrderStatus string
+
+const (
+	Pending OrderStatus = "Pending"
+	Processing OrderStatus = "Processing"
+	Shipped OrderStatus = "Shipped"
+	Delivered OrderStatus = "Delivered"
+)
+
+func changeOrderStatus(status OrderStatus) {
+	fmt.Println("Order status is: ", status)
+}
+
+func main() {
+	changeOrderStatus(Pending)
+	changeOrderStatus(Processing)
+	changeOrderStatus(Shipped)
+	changeOrderStatus(Delivered)
+}
+```
+
+**Benefits:**
+
+- Type safety: Can only use defined OrderStatus constants
+- Self-documenting code: Clearly shows valid order statuses
+- Prevents typos and invalid values
+
+## 3. Generics in Go
+
+Go 1.18+ supports generics, enabling type-flexible functions and data structures:
+
+### Generic Functions Example
+
+```go
+// Print slice of any type using the 'any' constraint
+func printSlice[T any](items []T) {
+	for _, v := range items {
+		fmt.Println(v)
+	}
+}
+
+// Print slice with constrained types
+func printSliceFixed[T interface{int | string | float64}](items []T) {
+	for _, v := range items {
+		fmt.Println(v)
+	}
+}
+
+// Usage
+printSlice([]int{1, 2, 3})
+printSlice([]string{"a", "b", "c"})
+
+printSliceFixed([]int{1, 2, 3})
+printSliceFixed([]string{"a", "b", "c"})
+// printSliceFixed([]bool{true, false}) // Would cause compile error
+```
+
+### Generic Data Structures
+
+```go
+// Generic stack implementation
+type Stack[T any] struct {
+	element []T
+}
+
+// Usage
+stack := Stack[int]{
+	element: []int{1, 2, 3, 4, 5},
+}
+
+stack2 := Stack[string]{
+	element: []string{"a", "b", "c", "d", "e"},
+}
+```
+
+**Benefits of Generics:**
+
+- Write functions and data structures once that work with multiple types
+- Type safety maintained at compile time
+- Reduces code duplication
+- Creates more reusable components
+
+## 4. Concurrency with Goroutines and WaitGroups
+
+Go makes concurrent programming simple with goroutines and synchronization primitives:
+
+```go
+import (
+	"fmt"
+	"sync"
+)
+
+func task(id int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("Task", id)
+}
+
+func main() {
+	var wg sync.WaitGroup
+
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go task(i, &wg)
+	}
+
+	wg.Wait()
+	fmt.Println("Done")
+}
+```
+
+**Key Concurrency Features:**
+
+- Goroutines: Lightweight threads managed by Go runtime
+- WaitGroups: Synchronization mechanism to wait for goroutines to complete
+- `defer`: Ensures cleanup code runs regardless of how function exits
+- Simple API for complex concurrent operations
