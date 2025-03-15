@@ -50,5 +50,25 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+    /* Files in a folder */
+	folderInfo, err := dir.ReadDir(0)
+
+	for _, fi := range folderInfo {
+		fmt.Println(fi.Name())
+	}
+
+
+	createFile, err := os.Create("example2.txt")
+	defer createFile.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	/* Append: replace existing content */
+	createFile.WriteString("Hi! Written some content!")
+	createFile.WriteString("Hi! Written some content again!")
+
+
 
 }
