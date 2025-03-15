@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -69,5 +70,46 @@ func main() {
 	createFile.WriteString("Hi! Written some content!")
 	createFile.WriteString("Hi! Written some content again!")
 
+	/* Append slice of bytes */
+	bytes := []byte("Hello!")
+	createFile.Write(bytes)
 
+	/* Read and Write (Streaming fashion) */
+	sourceFile, err := os.Open("source.txt")
+	defer sourceFile.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	/* Write from one file to another */
+	destinationFile, err := os.Create("destination.txt")
+	defer destinationFile.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	reader := bufio.NewReader(sourceFile)
+	writer := bufio.NewWriter(destinationFile)
+
+	for {
+		b, err := reader.ReadByte()
+		if err != nil {
+			if err.Error() != "EOF" {
+				panic(err)
+			}
+			break
+		}
+
+		er := writer.WriteByte(b)
+		if er != nil {
+			panic(er)
+		}
+
+	}
+
+	writer.Flush() 
+	fmt.Println("Written...")
+	
 }
