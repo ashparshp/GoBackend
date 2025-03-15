@@ -65,10 +65,9 @@ func main() {
 		panic(err)
 	}
 
-	/* Append: replace existing content */
+	/* Append */
 	createFile.WriteString("Hi! Written some content!")
 	createFile.WriteString("Hi! Written some content again!")
-
 
 
 }
