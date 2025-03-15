@@ -111,5 +111,13 @@ func main() {
 
 	writer.Flush() 
 	fmt.Println("Written...")
-	
+
+	/* Delete */
+	filepath := "delete.txt"
+
+	err = os.Remove(filepath)
+	if err != nil {
+		panic(err)
+	}
+
 }
