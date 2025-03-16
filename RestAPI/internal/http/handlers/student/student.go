@@ -64,20 +64,19 @@ func GetById(storage storage.Storage) http.HandlerFunc {
 		id := r.PathValue("id")
 		slog.Info("Getting a student", slog.String("id", id))
 
-	intId, err := strconv.ParseInt(id, 10, 64)
-	if err != nil {
-		response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
-		return
+		intId, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
+			return
+		}
+
+		student, err := storage.GetStudentById(intId)
+		if err != nil {
+			slog.Error("error getting user", slog.String("id", id))
+			response.WriteJson(w, http.StatusInternalServerError, response.GeneralError(err))
+			return
+		}
+
+		response.WriteJson(w, http.StatusOK, student)
 	}
-
-student, err := storage.GetStudentById(intId)
-if err != nil {
-    slog.Error("error getting user", slog.String("id", id))
-    response.WriteJson(w, http.StatusInternalServerError, response.GeneralError(err))
-    return
-}
-
-response.WriteJson(w, http.StatusOK, student)
-
-}
 }
