@@ -56,7 +56,7 @@ func main() {
 
 	<- done
 
-	slog.Info("Shtting down the server...")
+	slog.Info("Shutting down the server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second * 5)
 	defer cancel()
