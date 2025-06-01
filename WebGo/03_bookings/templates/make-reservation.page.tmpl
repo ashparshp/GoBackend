@@ -1,0 +1,230 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                {{$res := index .Data "reservation"}}
+                
+                <!-- Header Section -->
+                <div class="text-center mb-5">
+                    <h1 class="display-5 text-primary mb-3">Complete Your Reservation</h1>
+                    <p class="lead text-muted">Just a few more details to secure your stay</p>
+                </div>
+
+                <!-- Reservation Summary Card -->
+                <div class="card mb-4 reservation-summary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Reservation Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <strong class="text-primary">Room:</strong><br>
+                                <span class="text-muted">{{$res.Room.RoomName}}</span>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong class="text-primary">Check-in:</strong><br>
+                                <span class="text-muted">{{index .StringMap "start_date"}}</span>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong class="text-primary">Check-out:</strong><br>
+                                <span class="text-muted">{{index .StringMap "end_date"}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guest Information Form -->
+                <div class="card reservation-form">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0 text-primary"><i class="fas fa-user me-2"></i>Guest Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="/make-reservation" class="" novalidate>
+                            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                            <input type="hidden" name="start_date" value="{{index .StringMap "start_date"}}">
+                            <input type="hidden" name="end_date" value="{{index .StringMap "end_date"}}">
+                            <input type="hidden" name="room_id" value="{{$res.RoomID}}">
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="first_name" class="form-label">
+                                        <i class="fas fa-user me-1"></i>First Name
+                                    </label>
+                                    {{with .Form.Errors.Get "first_name"}}
+                                        <div class="text-danger small">{{.}}</div>
+                                    {{end}}
+                                    <input class="form-control form-control-lg {{with .Form.Errors.Get "first_name"}} is-invalid {{end}}"
+                                           id="first_name" autocomplete="off" type='text'
+                                           name='first_name' value="{{$res.FirstName}}" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_name" class="form-label">
+                                        <i class="fas fa-user me-1"></i>Last Name
+                                    </label>
+                                    {{with .Form.Errors.Get "last_name"}}
+                                        <div class="text-danger small">{{.}}</div>
+                                    {{end}}
+                                    <input class="form-control form-control-lg {{with .Form.Errors.Get "last_name"}} is-invalid {{end}}"
+                                           id="last_name" autocomplete="off" type='text'
+                                           name='last_name' value="{{$res.LastName}}" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i>Email Address
+                                </label>
+                                {{with .Form.Errors.Get "email"}}
+                                    <div class="text-danger small">{{.}}</div>
+                                {{end}}
+                                <input class="form-control form-control-lg {{with .Form.Errors.Get "email"}} is-invalid {{end}}" 
+                                       id="email" autocomplete="off" type='email'
+                                       name='email' value="{{$res.Email}}" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="phone" class="form-label">
+                                    <i class="fas fa-phone me-1"></i>Phone Number
+                                </label>
+                                {{with .Form.Errors.Get "phone"}}
+                                    <div class="text-danger small">{{.}}</div>
+                                {{end}}
+                                <input class="form-control form-control-lg {{with .Form.Errors.Get "phone"}} is-invalid {{end}}" 
+                                       id="phone" autocomplete="off" type='tel'
+                                       name='phone' value="{{$res.Phone}}" required>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg reservation-btn">
+                                    <i class="fas fa-check-circle me-2"></i>Confirm Reservation
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .reservation-summary {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .reservation-form {
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.15rem rgba(0,123,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        .reservation-btn {
+            border-radius: 20px;
+            padding: 10px 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .reservation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.3);
+            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+        }
+
+        .display-5 {
+            font-weight: 300;
+            letter-spacing: -1px;
+            font-size: 2rem;
+        }
+
+        .lead {
+            font-size: 1rem;
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 15px 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-header h5 {
+            font-size: 1rem;
+        }
+
+        .text-danger.small {
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
+        /* Make it wider on larger screens */
+        @media (min-width: 768px) {
+            .col-lg-8.col-xl-6 {
+                flex: 0 0 auto;
+                width: 85%;
+                max-width: none;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .col-lg-8.col-xl-6 {
+                width: 90%;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .col-lg-8.col-xl-6 {
+                width: 85%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .display-5 {
+                font-size: 1.8rem;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+            
+            .card-header {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+    
+{{end}}

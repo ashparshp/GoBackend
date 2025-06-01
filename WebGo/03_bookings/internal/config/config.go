@@ -1,0 +1,31 @@
+package config
+
+import (
+	"html/template"
+	"log"
+
+	"github.com/alexedwards/scs/v2"
+	"github.com/ashparshp/bookings/internal/models"
+)
+
+// AppConfig holds the application config
+type AppConfig struct {
+	UseCahce bool
+	TemplateCache map[string]*template.Template
+	InfoLog *log.Logger
+	ErrorLog *log.Logger
+	InProduction bool
+	Session *scs.SessionManager
+	MailChan chan models.MailData
+	MailConfig    MailConfig
+}
+
+type MailConfig struct {
+    Host       string
+    Port       int
+    Username   string
+    Password   string
+    Encryption string
+    FromAddress string
+    FromName   string
+}

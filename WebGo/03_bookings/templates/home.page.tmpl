@@ -1,9 +1,107 @@
 {{template "base" .}}
 
 {{define "content"}}
-    <div>
-    <h1>Welcome to the Home Page</h1>
-    <a href="/about">Go to About Page</a>
-    <p> This is a Paragraph </p>
+    <div id="main-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+
+        <ol class="carousel-indicators">
+            <li data-target="#main-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#main-carousel" data-slide-to="1"></li>
+            <li data-target="#main-carousel" data-slide-to="2"></li>
+        </ol>
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/static/images/woman-laptop.png" class="d-block w-100" alt="Woman and laptop">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>First slide label</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/tray.png" class="d-block w-100" alt="Tray with coffee">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Second slide label</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/outside.png" class="d-block w-100" alt="Outside">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Third slide label</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="py-5 my-4 rounded-lg shadow" style="background: linear-gradient(135deg, #f0f7fc 0%, #e1eef9 100%); border-left: 4px solid #1e88e5;">
+                    <h1 class="text-center mt-3 mb-4 text-dark" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.05);">Welcome to Fort Smythe Bed and Breakfast</h1>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <p class="lead text-center mb-5 text-secondary">
+                                Your home away <strong class="text-primary">from</strong> home, set on the majestic waters of the Atlantic Ocean.
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="text-center p-4 bg-white rounded shadow-sm h-100 border-0 transition-all" style="transition: all 0.3s ease; transform: translateY(0);" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; box-shadow: 0 0 15px rgba(0,123,255,0.1);">
+                                            <i class="fas fa-bed fa-2x text-primary"></i>
+                                        </div>
+                                        <h5 class="text-dark mb-3">Luxury Rooms</h5>
+                                        <p class="small text-muted">Comfortable accommodations with ocean views and modern amenities.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="text-center p-4 bg-white rounded shadow-sm h-100 border-0 transition-all" style="transition: all 0.3s ease; transform: translateY(0);" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; box-shadow: 0 0 15px rgba(40,167,69,0.1);">
+                                            <i class="fas fa-utensils fa-2x text-success"></i>
+                                        </div>
+                                        <h5 class="text-dark mb-3">Gourmet Breakfast</h5>
+                                        <p class="small text-muted">Start your day with our delicious locally-sourced breakfast.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="text-center p-4 bg-white rounded shadow-sm h-100 border-0 transition-all" style="transition: all 0.3s ease; transform: translateY(0);" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; box-shadow: 0 0 15px rgba(23,162,184,0.1);">
+                                            <i class="fas fa-water fa-2x text-info"></i>
+                                        </div>
+                                        <h5 class="text-dark mb-3">Oceanfront Location</h5>
+                                        <p class="small text-muted">Wake up to the sound of waves and breathtaking Atlantic views.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-center mt-4 text-secondary px-3" style="line-height: 1.7;">
+                                Experience tranquility and luxury at our charming bed and breakfast. 
+                                Whether you're seeking a romantic getaway or a peaceful retreat, 
+                                Fort Smythe offers an unforgettable escape from the everyday.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center">
+            <div class="py-5 my-5 rounded-lg shadow-sm" style="background: linear-gradient(135deg, #e9f5ff 0%, #f0f8ff 100%);">
+            <h4 class="text-primary mb-4">Ready for a memorable stay?</h4>
+            <a href="/search-availability" class="btn btn-primary btn-lg px-5 py-3 shadow position-relative overflow-hidden" 
+               style="background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%); border: none; transition: transform 0.3s, box-shadow 0.3s;"
+               onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)'"
+               onmouseout="this.style.transform='scale(1)'; this.style.boxShadow=''">
+            <i class="fas fa-calendar-check me-2"></i>
+            Make Reservation Now
+            <span class="position-absolute" style="width: 30px; height: 100%; top: 0; right: -20px; 
+                  background: rgba(255,255,255,0.2); transform: skewX(-30deg);"></span>
+            </a>
+            <p class="text-muted mt-3 small">Best rates guaranteed • No reservation fees</p>
+            </div>
+            </div>
+        </div>
+
     </div>
 {{end}}
