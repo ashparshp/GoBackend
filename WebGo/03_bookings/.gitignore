@@ -1,4 +1,4 @@
 .DS_Store
 .idea
 database.yml
-.env
+.env.DS_Store
