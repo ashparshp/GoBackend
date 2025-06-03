@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func main() {
+func investmentCalculator() {
 	const inflationRate = 2.5
 	var investmentAmount float64
 	expectedReturnRate := 5.5
