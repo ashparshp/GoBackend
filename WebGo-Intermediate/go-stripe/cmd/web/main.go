@@ -25,8 +25,8 @@ type config struct {
 
 type application struct {
 	config config
-	infoLog log.Logger
-	errorLog log.Logger
+	infoLog *log.Logger
+	errorLog *log.Logger
 	templateCache map[string]*template.Template
 	version string
 }
@@ -45,6 +45,13 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	infoLog.Println()
-	errorLog.Println()
+	tc := make(map[string]*template.Template)
+
+	app := &application {
+		config: cfg,
+		infoLog: infoLog,
+		errorLog: errorLog,
+		templateCache: tc,
+		version: version,
+	}
 }
