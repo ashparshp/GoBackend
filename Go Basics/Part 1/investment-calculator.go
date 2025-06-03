@@ -14,12 +14,11 @@ func investmentCalculator() {
 	fmt.Print("Investment Amount: ")
 	fmt.Scan(&investmentAmount)
 
-	fmt.Print("Years: ")
-	fmt.Scan(&years)
-
 	fmt.Print("Expected Return Rate: ")
 	fmt.Scan(&expectedReturnRate)
 
+	fmt.Print("Years: ")
+	fmt.Scan(&years)
 
 	futureValue := investmentAmount * math.Pow(1 + expectedReturnRate/100, years)
 	futureRealValue := futureValue / math.Pow(1 + inflationRate/100, years)
