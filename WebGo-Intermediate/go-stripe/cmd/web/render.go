@@ -54,7 +54,7 @@ func (app *application) renderTemplate(w http.ResponseWriter, r *http.Request, p
 
 	td = app.addDefaultData(td, r)
 
-	app = t.Execute(w, td)
+	err = t.Execute(w, td)
 	if err != nil {
 		app.errorLog.Println(err)
 		return err
@@ -79,7 +79,7 @@ func (app *application) parseTemplate(partials []string, page, templateToRender 
 		t, err = template.New(fmt.Sprintf("%s.page.tmpl", page)).Funcs(functions).ParseFS(templateFS, "templates/base.layout.tmpl", templateToRender)
 	}
 
-	if err := nil {
+	if err != nil {
 		app.errorLog.Println(err)
 		return nil, err
 	}
