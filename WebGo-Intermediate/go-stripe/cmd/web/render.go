@@ -9,21 +9,22 @@ import (
 )
 
 type templateData struct {
-	StringMap       map[string]string
-	IntMap          map[string]int
-	FloatMap        map[string]float32
-	Data            map[string]interface{}
-	CSRFToken       string
-	Flash           string
-	Warning         string
-	Error           string
-	IsAuthenticated int
-	API             string
-	CSSVersion      string
+    StringMap       map[string]string
+    IntMap          map[string]int
+    FloatMap        map[string]float32
+    Data            map[string]interface{}
+    CSRFToken       string
+    Flash           string
+    Warning         string
+    Error           string
+    IsAuthenticated int
+    API             string
+    CSSVersion      string
 }
 
 var functions = template.FuncMap {}
 
+//go:embed templates
 var templateFS embed.FS
 
 func (app *application) addDefaultData(td *templateData, r *http.Request) *templateData {
@@ -69,7 +70,7 @@ func (app *application) parseTemplate(partials []string, page, templateToRender 
 
 	if len(partials) > 0 {
 		for i, x := range partials {
-			partials[i] = fmt.Sprintf("templates/%s.partials.tmpl", x)
+			partials[i] = fmt.Sprintf("templates/%s.partial.tmpl", x)
 		}
 	}
 
