@@ -44,6 +44,9 @@
     <script>
         let card;
         let stripe;
+        const cardMessages = document.getElementById("card-messages");
+        const payButton = document.getElementById("pay-button");
+        const processing = document.getElementById("processing-payment");
 
         stripe = Stripe('pk_test_51RV2z80285oOqaU1pMKk8MXSLzYXuz1LPhEA8zruBvubTPPAk6I2k50R4zhZIbNldo8yytubvc165WVwXxpNUyZT009QELPxZq');
 
