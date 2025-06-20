@@ -56,6 +56,14 @@
         stripe = Stripe('pk_test_51RV2z80285oOqaU1pMKk8MXSLzYXuz1LPhEA8zruBvubTPPAk6I2k50R4zhZIbNldo8yytubvc165WVwXxpNUyZT009QELPxZq');
 
         function val() {
+            let form = document.getElementById("charge_form");
+            if (!form.checkValidity()) {
+                this.event.preventDefault();
+                this.event.stopPropagation();
+                form.classList.add("was-validated");
+                return;
+            }
+            form.classList.add("was-validated");
 
         }
 
