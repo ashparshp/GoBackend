@@ -19,7 +19,7 @@ type Transaction struct {
 	BankReturnCode      string
 }
 
-func (c *Card) CreatePaymentIntent(currency string, amount int) (*stripe.PaymentIntent, error, string) {
+func (c *Card) CreatePaymentIntent(currency string, amount int) (*stripe.PaymentIntent, string, error) {
 	stripe.Key = c.Secret
 
 	// create a payment intent
@@ -32,9 +32,23 @@ func (c *Card) CreatePaymentIntent(currency string, amount int) (*stripe.Payment
 	msg := ""
 	if err != nil {
 		if stripeErr, ok := err.(*stripe.Error); ok {
-			msg = string(stripeErr.Code)
+			msg = cardErrorMessage(stripeErr.Code)
 		}
+		return nil, msg, err
+	}
+	return pi, "", nil
+}
+
+func cardErrorMessage(code stripe.ErrorCode) string {
+	var msg = ""
+	switch code {
+	case stripe.ErrorCodeCardDeclined:
+		msg = "Your card was declined"
+	case stripe.ErrorCodeExpiredCard:
+		msg = "Your card is expired"
+	default:
+		msg = "Your card was declined"
 	}
 
-	return pi, err, msg
+	return msg
 }
