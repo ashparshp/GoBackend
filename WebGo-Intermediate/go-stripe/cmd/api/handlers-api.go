@@ -17,11 +17,10 @@ type jsonResponse struct {
 	OK      bool   `json:"ok"`
 	Message string `json:"message,omitempty"`
 	Content string `json:"content,omitempty"`
-	ID      int    `json:"id",omitempty`
+	ID      int    `json:"id,omitempty"`
 }
 
 func (app *application) GetPaymentIntent(w http.ResponseWriter, r *http.Request) {
-
 	var payload stripePayload
 
 	err := json.NewDecoder(r.Body).Decode(&payload)
@@ -50,7 +49,7 @@ func (app *application) GetPaymentIntent(w http.ResponseWriter, r *http.Request)
 	}
 
 	if okay {
-		out, err := json.MarshalIndent(pi, "", " ")
+		out, err := json.MarshalIndent(pi, "", "   ")
 		if err != nil {
 			app.errorLog.Println(err)
 			return
@@ -60,12 +59,12 @@ func (app *application) GetPaymentIntent(w http.ResponseWriter, r *http.Request)
 		w.Write(out)
 	} else {
 		j := jsonResponse{
-			OK: false,
+			OK:      false,
 			Message: msg,
 			Content: "",
 		}
 
-		out, err := json.MarshalIndent(j, "", "  ")
+		out, err := json.MarshalIndent(j, "", "   ")
 		if err != nil {
 			app.errorLog.Println(err)
 		}
