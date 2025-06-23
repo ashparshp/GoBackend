@@ -104,7 +104,7 @@
 
             const requestOptions = {
                 method: 'post',
-                Headers: {
+                headers: {
                     'Accept': 'application/json',
                     'Content-Type':'application/json'
                 },
@@ -118,9 +118,11 @@
                 try {
                     data = JSON.parse(response)
                     stripe.confirmCardPayment(data.client_secret, {
-                        card: card,
-                        billing_details: {
-                            name: document.getElementById("cardholder_name").value(),
+                        payment_method: {
+                            card: card,
+                            billing_details: {
+                            name: document.getElementById("cardholder_name").value,
+                            }
                         }
                     }).then(function(result) {
                         if (result.error) {
@@ -160,7 +162,7 @@
             // create card entry
             card = elements.create('card', {
                 style: style,
-                hidePostalCode: false,
+                hidePostalCode: true,
             });
             card.mount('#card-element');
 
