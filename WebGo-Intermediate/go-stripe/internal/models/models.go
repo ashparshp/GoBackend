@@ -116,3 +116,7 @@ func (m *DBModel) GetWidget(id int) (Widget, error) {
 
 	return widget, nil
 }
+
+func (m *DBModel) InsertTransaction(txn Transaction) (int, error) {
+	
+}
