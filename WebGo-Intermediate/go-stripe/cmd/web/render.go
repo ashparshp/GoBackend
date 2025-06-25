@@ -9,20 +9,27 @@ import (
 )
 
 type templateData struct {
-    StringMap       map[string]string
-    IntMap          map[string]int
-    FloatMap        map[string]float32
-    Data            map[string]interface{}
-    CSRFToken       string
-    Flash           string
-    Warning         string
-    Error           string
-    IsAuthenticated int
-    API             string
-    CSSVersion      string
+	StringMap       map[string]string
+	IntMap          map[string]int
+	FloatMap        map[string]float32
+	Data            map[string]interface{}
+	CSRFToken       string
+	Flash           string
+	Warning         string
+	Error           string
+	IsAuthenticated int
+	API             string
+	CSSVersion      string
 }
 
-var functions = template.FuncMap {}
+var functions = template.FuncMap{
+	"formatCurrency": formatCurrency,
+}
+
+func formatCurrency(n int) string {
+	f := float32(n / 100)
+	return fmt.Sprintf("%.2f", f)
+}
 
 //go:embed templates
 var templateFS embed.FS
@@ -39,8 +46,8 @@ func (app *application) renderTemplate(w http.ResponseWriter, r *http.Request, p
 	templateToRender := fmt.Sprintf("templates/%s.page.tmpl", page)
 
 	_, templateInMap := app.templateCache[templateToRender]
-	
-	if (app.config.env == "production" && templateInMap) {
+
+	if app.config.env == "production" && templateInMap {
 		t = app.templateCache[templateToRender]
 	} else {
 		t, err = app.parseTemplate(partials, page, templateToRender)
@@ -61,7 +68,7 @@ func (app *application) renderTemplate(w http.ResponseWriter, r *http.Request, p
 		app.errorLog.Println(err)
 		return err
 	}
-	
+
 	return nil
 }
 
