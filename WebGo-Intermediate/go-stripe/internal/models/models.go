@@ -32,7 +32,7 @@ type Widget struct {
 	Description    string    `json:"description"`
 	InventoryLevel int       `json:"inventory_level"`
 	Price          int       `json:"price"`
-	Image          Status    `json:"image"`
+	Image          string    `json:"image"`
 	CreatedAt      time.Time `json:"-"`
 	UpdatedAt      time.Time `json:"-"`
 }
@@ -96,17 +96,18 @@ func (m *DBModel) GetWidget(id int) (Widget, error) {
 	var widget Widget
 
 	row := m.DB.QueryRowContext(ctx, `
-	select id, name, description, inventory_level, coalesce(image, ''), created_at, updated_at 
+	select id, name, description, inventory_level, price, coalesce(image, ''), created_at, updated_at 
 	from widgets 
 	where id= ?`, id)
 	err := row.Scan(
-		&widget.ID, 
-		&widget.Name, 
-		&widget.Description, 
-		&widget.InventoryLevel, 
-		&widget.Image, 
-		&widget.CreatedAt, 
-		&widget.UpdatedAt, 
+		&widget.ID,
+		&widget.Name,
+		&widget.Description,
+		&widget.InventoryLevel,
+		&widget.Price,
+		&widget.Image,
+		&widget.CreatedAt,
+		&widget.UpdatedAt,
 	)
 
 	if err != nil {
