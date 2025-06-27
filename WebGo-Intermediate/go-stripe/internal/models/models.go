@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// DBModel is the type for the database connection values
+// DBModel is the type for database connection values
 type DBModel struct {
 	DB *sql.DB
 }
@@ -19,9 +19,7 @@ type Models struct {
 // NewModels returns a model type with database connection pool
 func NewModels(db *sql.DB) Models {
 	return Models{
-		DB: DBModel{
-			DB: db,
-		},
+		DB: DBModel{DB: db},
 	}
 }
 
@@ -83,12 +81,12 @@ type User struct {
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
 	Email     string    `json:"email"`
-	LastFour  string    `json:"last_four"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }
 
+// GetWidget gets one widget by id
 func (m *DBModel) GetWidget(id int) (Widget, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -96,11 +94,14 @@ func (m *DBModel) GetWidget(id int) (Widget, error) {
 	var widget Widget
 
 	row := m.DB.QueryRowContext(ctx, `
-	select id, name, description, inventory_level, price, coalesce(image, ''), created_at, updated_at 
-	from widgets 
-	where id= ?`, id)
+		select 
+			id, name, description, inventory_level, price, coalesce(image, ''),
+			created_at, updated_at
+		from 
+			widgets 
+		where id = ?`, id)
 	err := row.Scan(
-		&widget.ID,
+		&widget.ID, 
 		&widget.Name,
 		&widget.Description,
 		&widget.InventoryLevel,
@@ -109,7 +110,6 @@ func (m *DBModel) GetWidget(id int) (Widget, error) {
 		&widget.CreatedAt,
 		&widget.UpdatedAt,
 	)
-
 	if err != nil {
 		return widget, err
 	}
@@ -117,14 +117,17 @@ func (m *DBModel) GetWidget(id int) (Widget, error) {
 	return widget, nil
 }
 
+// InsertTransaction inserts a new txn, and returns its id
 func (m *DBModel) InsertTransaction(txn Transaction) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	stmt := `
 		insert into transactions
-			(amount, currency, last_four, bank_return_code, transaction_status_id, created_at, updated_at)
-		values (?, ?, ?, ?, ?, ?, ?)`
+			(amount, currency, last_four, bank_return_code,
+			transaction_status_id, created_at, updated_at)
+		values (?, ?, ?, ?, ?, ?, ?)
+	`
 
 	result, err := m.DB.ExecContext(ctx, stmt,
 		txn.Amount,
@@ -135,7 +138,6 @@ func (m *DBModel) InsertTransaction(txn Transaction) (int, error) {
 		time.Now(),
 		time.Now(),
 	)
-
 	if err != nil {
 		return 0, err
 	}
@@ -148,14 +150,17 @@ func (m *DBModel) InsertTransaction(txn Transaction) (int, error) {
 	return int(id), nil
 }
 
+// InsertOrder inserts a new order, and returns its id
 func (m *DBModel) InsertOrder(order Order) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	stmt := `
 		insert into orders
-			(widget_id, transaction_id, status_id, quantity, amount, created_at, updated_at)
-		values (?, ?, ?, ?, ?, ?, ?)`
+			(widget_id, transaction_id, status_id, quantity,
+			amount, created_at, updated_at)
+		values (?, ?, ?, ?, ?, ?, ?)
+	`
 
 	result, err := m.DB.ExecContext(ctx, stmt,
 		order.WidgetID,
@@ -166,7 +171,6 @@ func (m *DBModel) InsertOrder(order Order) (int, error) {
 		time.Now(),
 		time.Now(),
 	)
-
 	if err != nil {
 		return 0, err
 	}
