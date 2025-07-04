@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/ashparshp/go-stripe/internal/cards"
 	"github.com/ashparshp/go-stripe/internal/models"
@@ -39,6 +40,11 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 	paymentMethod := r.Form.Get("payment_method")
 	paymentAmount := r.Form.Get("payment_amount")
 	paymentCurrency := r.Form.Get("payment_currency")
+	widgetID, err := strconv.Atoi(r.Form.Get("product_id"))
+	if err != nil {
+		app.errorLog.Println("Error converting widget ID:", err)
+		return
+	}
 
 	card := cards.Card{
 		Secret: app.config.stripe.secret,
@@ -67,7 +73,6 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 		app.errorLog.Println(err)
 		return
 	}
-	app.infoLog.Printf("Customer ID: %s", customerID)
 
 	// create a new transaction
 	amount, err := strconv.Atoi(paymentAmount)
@@ -83,7 +88,7 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 		ExpiryMonth:         int(expiryMonth),
 		ExpiryYear:          int(expiryYear),
 		BankReturnCode:      pi.Charges.Data[0].ID,
-		TransactionStatusID: 2, // cleared status
+		TransactionStatusID: 2,
 	}
 
 	transactionID, err := app.SaveTransaction(txn)
@@ -91,11 +96,23 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 		app.errorLog.Println("Error saving transaction:", err)
 		return
 	}
-	app.infoLog.Printf("Transaction ID: %d", transactionID)
 
 	// create a new order
-
-	// create a new transaction
+	order := models.Order{
+		WidgetID:      widgetID,
+		TransactionID: transactionID,
+		CustomerID:    customerID,
+		StatusID:      1,
+		Quantity:      1,
+		Amount:        amount,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
+	}
+	_, err = app.SaveOrder(order)
+	if err != nil {
+		app.errorLog.Println("Error saving order:", err)
+		return
+	}
 
 	data := make(map[string]interface{})
 	data["email"] = email
@@ -144,6 +161,17 @@ func (app *application) SaveTransaction(txn models.Transaction) (int, error) {
 		return 0, err
 	}
 
+	return id, nil
+}
+
+// SaveOrder saves a new order to the database
+func (app *application) SaveOrder(order models.Order) (int, error) {
+	// Create a new order in the database
+	id, err := app.DB.InsertOrder(order)
+	if err != nil {
+		app.errorLog.Println("Error inserting order:", err)
+		return 0, err
+	}
 	return id, nil
 }
 
