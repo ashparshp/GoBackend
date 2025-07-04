@@ -132,12 +132,25 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 	data["last_name"] = lastName
 
 	// should write this data to session, and then redirect user to new page?
+	app.Session.Put(r.Context(), "receipt", data)
+	http.Redirect(w, r, "/receipt", http.StatusSeeOther)
+}
 
-	if err := app.renderTemplate(w, r, "succeeded", &templateData{
+// Receipt displays the receipt page
+func (app *application) Receipt(w http.ResponseWriter, r *http.Request) {
+	data := app.Session.Get(r.Context(), "receipt").(map[string]interface{})
+	if data == nil {
+		http.Error(w, "No receipt data found", http.StatusNotFound)
+		return
+	}
+	app.Session.Remove(r.Context(), "receipt")
+
+	if err := app.renderTemplate(w, r, "receipt", &templateData{
 		Data: data,
 	}); err != nil {
 		app.errorLog.Println(err)
 	}
+	
 }
 
 // SaveCustomer saves a new customer to the database
