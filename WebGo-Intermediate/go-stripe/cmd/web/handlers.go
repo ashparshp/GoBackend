@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/ashparshp/go-stripe/internal/cards"
+	"github.com/ashparshp/go-stripe/internal/models"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -31,7 +32,8 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 	}
 
 	// read posted data
-	cardHolder := r.Form.Get("cardholder_name")
+	firstName := r.Form.Get("first_name")
+	lastName := r.Form.Get("last_name")
 	email := r.Form.Get("email")
 	paymentIntent := r.Form.Get("payment_intent")
 	paymentMethod := r.Form.Get("payment_method")
@@ -59,8 +61,43 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 	expiryMonth := pm.Card.ExpMonth
 	expiryYear := pm.Card.ExpYear
 
+	// create a new customer
+	customerID, err := app.SaveCustomer(firstName, lastName, email)
+	if err != nil {
+		app.errorLog.Println(err)
+		return
+	}
+	app.infoLog.Printf("Customer ID: %s", customerID)
+
+	// create a new transaction
+	amount, err := strconv.Atoi(paymentAmount)
+	if err != nil {
+		app.errorLog.Println("Error converting payment amount:", err)
+		return
+	}
+
+	txn := models.Transaction{
+		Amount:              amount,
+		Currency:            paymentCurrency,
+		LastFour:            lastFour,
+		ExpiryMonth:         int(expiryMonth),
+		ExpiryYear:          int(expiryYear),
+		BankReturnCode:      pi.Charges.Data[0].ID,
+		TransactionStatusID: 2, // cleared status
+	}
+
+	transactionID, err := app.SaveTransaction(txn)
+	if err != nil {
+		app.errorLog.Println("Error saving transaction:", err)
+		return
+	}
+	app.infoLog.Printf("Transaction ID: %d", transactionID)
+
+	// create a new order
+
+	// create a new transaction
+
 	data := make(map[string]interface{})
-	data["cardholder"] = cardHolder
 	data["email"] = email
 	data["pi"] = paymentIntent
 	data["pm"] = paymentMethod
@@ -78,6 +115,36 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 	}); err != nil {
 		app.errorLog.Println(err)
 	}
+}
+
+// SaveCustomer saves a new customer to the database
+func (app *application) SaveCustomer(firstName, lastName, email string) (int, error) {
+	// Create a new customer in the database
+	customer := models.Customer{
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+	}
+
+	id, err := app.DB.InsertCustomer(customer)
+	if err != nil {
+		app.errorLog.Println("Error inserting customer:", err)
+		return 0, err
+	}
+
+	return id, nil
+}
+
+// SaveTransaction saves a new transaction to the database
+func (app *application) SaveTransaction(txn models.Transaction) (int, error) {
+	// Create a new transaction in the database
+	id, err := app.DB.InsertTransaction(txn)
+	if err != nil {
+		app.errorLog.Println("Error inserting transaction:", err)
+		return 0, err
+	}
+
+	return id, nil
 }
 
 // ChargeOnce displays the page to buy one widget
