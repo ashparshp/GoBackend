@@ -140,8 +140,8 @@ func (m *DBModel) InsertTransaction(txn Transaction) (int, error) {
 	stmt := `
 		insert into transactions
 			(amount, currency, last_four, expiry_month, expiry_year,
-			bank_return_code, transaction_status_id, created_at, updated_at)
-		values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+			bank_return_code, payment_intent, payment_method, transaction_status_id, created_at, updated_at)
+		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`
 
 	result, err := m.DB.ExecContext(ctx, stmt,
@@ -151,6 +151,8 @@ func (m *DBModel) InsertTransaction(txn Transaction) (int, error) {
 		txn.ExpiryMonth,
 		txn.ExpiryYear,
 		txn.BankReturnCode,
+		txn.PaymentIntent,
+		txn.PaymentMethod,
 		txn.TransactionStatusID,
 		time.Now(),
 		time.Now(),
