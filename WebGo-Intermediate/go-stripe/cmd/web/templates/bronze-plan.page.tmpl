@@ -1,0 +1,12 @@
+{{template "base" .}}
+
+{{define "title"}}
+Bronze Plan
+{{end}}
+
+{{define "content"}}
+<div class="container">
+    <h1>Bronze Plan</h1>
+    <p>Price: {{formatCurrency .IntMap.plan_id}}</p>
+</div>
+{{end}}

@@ -308,7 +308,13 @@ func (app *application) ChargeOnce(w http.ResponseWriter, r *http.Request) {
 
 // BronzePlan displays the bronze plan page
 func (app *application) BronzePlan(w http.ResponseWriter, r *http.Request) {
-	if err := app.renderTemplate(w, r, "bronze-plan", &templateData{}, "stripe-js"); err != nil {
+	intMap := make(map[string]int)
+
+	intMap["plan_id"] = 1 // Example plan ID, replace with actual ID if needed
+
+	if err := app.renderTemplate(w, r, "bronze-plan", &templateData{
+		IntMap: intMap,
+	}, "stripe-js"); err != nil {
 		app.errorLog.Println(err)
 	}
 }
