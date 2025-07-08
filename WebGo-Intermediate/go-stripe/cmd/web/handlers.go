@@ -206,7 +206,13 @@ func (app *application) VirtualTerminalPaymentSucceeded(w http.ResponseWriter, r
 
 // VirtualTerminalReceipt displays the receipt page for the virtual terminal
 func (app *application) VirtualTerminalReceipt(w http.ResponseWriter, r *http.Request) {
-	txn := app.Session.Get(r.Context(), "receipt").(TransactionalData)
+	val := app.Session.Get(r.Context(), "receipt")
+	txn, ok := val.(TransactionalData)
+	if !ok {
+		app.errorLog.Println("No receipt data in session or wrong type")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	data := make(map[string]interface{})
 	data["txn"] = txn
 	app.Session.Remove(r.Context(), "receipt")
@@ -220,7 +226,13 @@ func (app *application) VirtualTerminalReceipt(w http.ResponseWriter, r *http.Re
 
 // Receipt displays the receipt page
 func (app *application) Receipt(w http.ResponseWriter, r *http.Request) {
-	txn := app.Session.Get(r.Context(), "receipt").(TransactionalData)
+	val := app.Session.Get(r.Context(), "receipt")
+	txn, ok := val.(TransactionalData)
+	if !ok {
+		app.errorLog.Println("No receipt data in session or wrong type")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	data := make(map[string]interface{})
 	data["txn"] = txn
 	app.Session.Remove(r.Context(), "receipt")
@@ -294,3 +306,9 @@ func (app *application) ChargeOnce(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// BronzePlan displays the bronze plan page
+func (app *application) BronzePlan(w http.ResponseWriter, r *http.Request) {
+	if err := app.renderTemplate(w, r, "bronze-plan", &templateData{}, "stripe-js"); err != nil {
+		app.errorLog.Println(err)
+	}
+}
