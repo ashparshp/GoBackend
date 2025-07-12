@@ -326,3 +326,10 @@ func (app *application) BronzePlan(w http.ResponseWriter, r *http.Request) {
 		app.errorLog.Println(err)
 	}
 }
+
+// BronzePlanReceipt displays the receipt for the bronze plan
+func (app *application) BronzePlanReceipt(w http.ResponseWriter, r *http.Request) {
+	if err := app.renderTemplate(w, r, "reciept-plan", &templateData{}); err != nil {
+		app.errorLog.Println(err)
+	}
+}
