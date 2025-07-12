@@ -136,7 +136,8 @@ Bronze Plan
         function stripePaymentMethodHandler(result) {
             if (result.error) {
                 showCardError(result.error.message);
-            } else {
+            } 
+            else {
                 let payload = {
                     product_id: document.getElementById("product_id").value,
                     plan: "{{$widget.PlanID}}",
@@ -173,10 +174,10 @@ Bronze Plan
                         sessionStorage.email = document.getElementById("cardholder-email").value;
                         sessionStorage.last_four = result.paymentMethod.card.last4;
 
-                        location.href = "/recipt/bronze";
-                    })
-                }
+                        location.href = "/reciept/bronze";
+                    });
             }
+        }
 
         (function() {
             // create stripe & elements
