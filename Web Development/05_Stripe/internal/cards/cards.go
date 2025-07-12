@@ -63,6 +63,17 @@ func (c *Card) GetPaymentMethod(s string) (*stripe.PaymentMethod, error) {
 	return pm, nil
 }
 
+// RetrievePaymentIntent gets an existing payment intent by id
+func (c *Card) RetrievePaymentIntent(id string) (*stripe.PaymentIntent, error) {
+	stripe.Key = c.Secret
+
+	pi, err := paymentintent.Get(id, nil)
+	if err != nil {
+		return nil, err
+	}
+	return pi, nil
+}
+
 // SubscribeToPlan subscribes a stripe customer to a stripe plan
 func (c *Card) SubscribeToPlan(cust *stripe.Customer, plan, email, last4, cardType string) (*stripe.Subscription, error) {
 	stripeCustomerID := cust.ID
@@ -72,7 +83,7 @@ func (c *Card) SubscribeToPlan(cust *stripe.Customer, plan, email, last4, cardTy
 
 	params := &stripe.SubscriptionParams{
 		Customer: stripe.String(stripeCustomerID),
-		Items: items,
+		Items:    items,
 	}
 
 	params.AddMetadata("last_four", last4)
@@ -90,7 +101,7 @@ func (c *Card) CreateCustomer(pm, email string) (*stripe.Customer, string, error
 	stripe.Key = c.Secret
 	customerParams := &stripe.CustomerParams{
 		PaymentMethod: stripe.String(pm),
-		Email: stripe.String(email),
+		Email:         stripe.String(email),
 		InvoiceSettings: &stripe.CustomerInvoiceSettingsParams{
 			DefaultPaymentMethod: stripe.String(pm),
 		},
